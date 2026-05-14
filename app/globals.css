@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@theme {
+  /* ───────── Brand palette (Zentrae IT) ───────── */
+  --color-ink: #0F0F14;
+  --color-surface: #1A1A24;
+  --color-surface-2: #242433;
+
+  --color-primary: #7F77DD;
+  --color-primary-dark: #5A52B0;
+  --color-primary-soft: #AFA9EC;
+
+  --color-accent: #5DCAA5;
+  --color-accent-dark: #3DA585;
+  --color-accent-soft: #9FE1CB;
+
+  --color-fg: #FFFFFF;
+  --color-muted: #B8B8C5;
+  --color-subtle: #8A8A99;
+  --color-border: #5A5A6A;
+
+  --color-success: #5DCAA5;
+  --color-warning: #EFB55C;
+  --color-error: #E27676;
+
+  /* ───────── Typography ───────── */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "JetBrains Mono", Consolas, monospace;
+
+  /* ───────── Easing ───────── */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-ink);
+    color: var(--color-fg);
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-primary) 45%, transparent);
+    color: var(--color-fg);
+  }
+
+  /* Section anchor offset so sticky nav doesn't cover headings */
+  [id] {
+    scroll-margin-top: 96px;
+  }
+}
+
+@layer utilities {
+  /* Display headers: ultra-light + wide tracking, in caps */
+  .display-eyebrow {
+    font-weight: 300;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .display-headline {
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
+  .grid-fade-mask {
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+            mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+
+  /* Hairline border with brand tint, used on cards on hover */
+  .ring-brand-hover {
+    transition: box-shadow 200ms var(--ease-out-soft),
+                transform 200ms var(--ease-out-soft),
+                border-color 200ms var(--ease-out-soft);
+  }
+  .ring-brand-hover:hover {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-accent) 60%, transparent),
+                0 20px 50px -20px color-mix(in oklab, var(--color-primary) 35%, transparent);
+  }
+}
+
+/* Reduce motion preference: kill the heavier animations */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
