@@ -5,6 +5,8 @@ import { Services } from "@/components/sections/Services";
 import { Process } from "@/components/sections/Process";
 import { Products } from "@/components/sections/Products";
 import { TechStack } from "@/components/sections/TechStack";
+import { Contact } from "@/components/sections/Contact";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 
 export default function Home() {
   return (
@@ -16,11 +18,10 @@ export default function Home() {
         <Process />
         <Products />
         <TechStack />
-        {/* Hito 3:
-          <Contact />
-        */}
+        <Contact />
       </main>
       <Footer />
+      <ChatWidget />
     </>
   );
 }
