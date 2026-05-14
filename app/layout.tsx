@@ -61,7 +61,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className={`${inter.variable} ${jetbrains.variable}`}>
-      <body className="min-h-screen bg-ink text-fg antialiased">{children}</body>
+      <body className="min-h-screen bg-ink text-fg antialiased">
+        <a
+          href="#hero"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:text-fg focus:shadow-lg"
+        >
+          Saltar al contenido principal
+        </a>
+        {children}
+      </body>
     </html>
   );
 }
