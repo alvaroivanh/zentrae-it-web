@@ -14,8 +14,12 @@ shape estable para migrar a WP REST/WPGraphQL sin tocar componentes).
 ```bash
 npm install
 npm run dev
-# abre http://localhost:3000
+# abre http://localhost:3939
 ```
+
+> Usamos puerto **3939** (no el 3000 por defecto de Next) para no
+> chocar con otros proyectos locales. Cambia el flag `-p` en
+> `package.json` si necesitas otro puerto.
 
 Requisitos: Node ≥ 20.
 

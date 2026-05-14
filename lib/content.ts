@@ -185,51 +185,70 @@ export const products: Product[] = [
   },
 ];
 
+export type TechCategory =
+  | "Frontend"
+  | "Backend"
+  | "IA"
+  | "Integraciones"
+  | "Infra"
+  | "Datos";
+
 export type TechItem = {
   name: string;
-  category: "Frontend" | "Backend" | "IA" | "Integraciones" | "Infra" | "Datos";
+  category: TechCategory;
+  /** simple-icons slug, used to render the logo via CDN. Optional. */
+  slug?: string;
 };
+
+export const techCategories: TechCategory[] = [
+  "Frontend",
+  "Backend",
+  "IA",
+  "Integraciones",
+  "Infra",
+  "Datos",
+];
 
 export const techStack: TechItem[] = [
   // Frontend
-  { name: "Next.js", category: "Frontend" },
-  { name: "React", category: "Frontend" },
-  { name: "Vue", category: "Frontend" },
-  { name: "Webflow", category: "Frontend" },
-  { name: "Tailwind CSS", category: "Frontend" },
-  { name: "Framer Motion", category: "Frontend" },
+  { name: "Next.js", category: "Frontend", slug: "nextdotjs" },
+  { name: "React", category: "Frontend", slug: "react" },
+  { name: "Vue", category: "Frontend", slug: "vuedotjs" },
+  { name: "Webflow", category: "Frontend", slug: "webflow" },
+  { name: "Tailwind CSS", category: "Frontend", slug: "tailwindcss" },
+  { name: "Framer Motion", category: "Frontend", slug: "framer" },
   // Backend
-  { name: "Node.js", category: "Backend" },
-  { name: "Python", category: "Backend" },
-  { name: "n8n", category: "Backend" },
-  { name: "Express", category: "Backend" },
-  { name: "FastAPI", category: "Backend" },
+  { name: "Node.js", category: "Backend", slug: "nodedotjs" },
+  { name: "Python", category: "Backend", slug: "python" },
+  { name: "n8n", category: "Backend", slug: "n8n" },
+  { name: "Express", category: "Backend", slug: "express" },
+  { name: "FastAPI", category: "Backend", slug: "fastapi" },
   // IA
-  { name: "Claude", category: "IA" },
-  { name: "OpenAI", category: "IA" },
-  { name: "Gemini", category: "IA" },
+  { name: "Claude", category: "IA", slug: "anthropic" },
+  { name: "OpenAI", category: "IA", slug: "openai" },
+  { name: "Gemini", category: "IA", slug: "googlegemini" },
   { name: "OpenRouter", category: "IA" },
   { name: "OpenClaw", category: "IA" },
   { name: "Paperclip", category: "IA" },
   // Integraciones
-  { name: "WhatsApp Business", category: "Integraciones" },
-  { name: "Stripe", category: "Integraciones" },
+  { name: "WhatsApp Business", category: "Integraciones", slug: "whatsapp" },
+  { name: "Stripe", category: "Integraciones", slug: "stripe" },
   { name: "Wompi", category: "Integraciones" },
   { name: "ePayco", category: "Integraciones" },
-  { name: "Mercado Pago", category: "Integraciones" },
-  { name: "Google Maps", category: "Integraciones" },
+  { name: "Mercado Pago", category: "Integraciones", slug: "mercadopago" },
+  { name: "Google Maps", category: "Integraciones", slug: "googlemaps" },
   { name: "Bookeala", category: "Integraciones" },
-  { name: "HubSpot", category: "Integraciones" },
+  { name: "HubSpot", category: "Integraciones", slug: "hubspot" },
   // Infra
-  { name: "Vercel", category: "Infra" },
-  { name: "Cloudflare", category: "Infra" },
-  { name: "Supabase", category: "Infra" },
-  { name: "AWS", category: "Infra" },
+  { name: "Vercel", category: "Infra", slug: "vercel" },
+  { name: "Cloudflare", category: "Infra", slug: "cloudflare" },
+  { name: "Supabase", category: "Infra", slug: "supabase" },
+  { name: "AWS", category: "Infra", slug: "amazonwebservices" },
   // Datos
-  { name: "PostgreSQL", category: "Datos" },
-  { name: "MongoDB", category: "Datos" },
-  { name: "Airtable", category: "Datos" },
-  { name: "Google Sheets", category: "Datos" },
+  { name: "PostgreSQL", category: "Datos", slug: "postgresql" },
+  { name: "MongoDB", category: "Datos", slug: "mongodb" },
+  { name: "Airtable", category: "Datos", slug: "airtable" },
+  { name: "Google Sheets", category: "Datos", slug: "googlesheets" },
 ];
 
 export const contact = {

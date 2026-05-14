@@ -21,7 +21,7 @@ export function SectionReveal({
   as?: "div" | "section" | "article" | "header" | "footer";
 }) {
   const reduce = useReducedMotion();
-  const MotionTag = motion(As);
+  const MotionTag = motion.create(As);
 
   return (
     <MotionTag
