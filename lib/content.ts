@@ -11,6 +11,7 @@ export const nav: NavLink[] = [
   { label: "Servicios", href: "#servicios" },
   { label: "Proceso", href: "#proceso" },
   { label: "Portafolio", href: "#portafolio" },
+  { label: "Verticales", href: "#verticales" },
   { label: "Stack", href: "#stack" },
   { label: "Contacto", href: "#contacto" },
 ];
@@ -18,7 +19,7 @@ export const nav: NavLink[] = [
 export const hero = {
   eyebrow: "Zentrae IT · Bogotá · LATAM",
   headline: "Construimos lo que tu negocio necesita para crecer.",
-  sub: "Diseñamos, desarrollamos y automatizamos producto digital con IA. Páginas web, e-commerce, integraciones y agentes conversacionales — todo con visión de producto.",
+  sub: "Automatización con IA para negocios que atienden clientes — restaurantes, consultorios, servicios profesionales y más. Diseñamos, desarrollamos y conectamos producto digital end-to-end.",
   primaryCta: { label: "Hablemos de tu proyecto", href: "#contacto" },
   secondaryCta: { label: "Ver casos de éxito", href: "#portafolio" },
 };
@@ -27,8 +28,13 @@ export type Service = {
   id: string;
   number: string;
   title: string;
+  /** Short, punchy line shown on the FRONT of the flip card. */
+  tagline: string;
+  /** Full description shown on the BACK. */
   blurb: string;
   bullets: string[];
+  /** Lucide icon name — resolved in the Services section. */
+  icon: "globe" | "plug" | "brainCircuit" | "package";
 };
 
 export const services: Service[] = [
@@ -36,8 +42,10 @@ export const services: Service[] = [
     id: "web",
     number: "01",
     title: "Desarrollo web y e-commerce",
+    tagline: "Webs que convierten. Construidas para escalar.",
+    icon: "globe",
     blurb:
-      "Webs corporativas, landings de alta conversión y tiendas online construidas para escalar.",
+      "Webs corporativas, landings de alta conversión y tiendas online construidas para escalar. Sin plantillas — cada una a medida con visión de producto.",
     bullets: [
       "Next.js, React, Webflow",
       "Despliegue en Vercel y Cloudflare",
@@ -49,8 +57,10 @@ export const services: Service[] = [
     id: "integraciones",
     number: "02",
     title: "Integraciones a medida",
+    tagline: "Conectamos lo que ya usas, sin doble trabajo.",
+    icon: "plug",
     blurb:
-      "Conectamos tu sitio con los sistemas que ya usas — reservas, pagos, CRM, analítica.",
+      "Conectamos tu sitio con los sistemas que ya usas — reservas, pagos, CRM, analítica. Tu operación deja de vivir en pestañas separadas.",
     bullets: [
       "Pasarelas: Wompi, Stripe, ePayco, Mercado Pago",
       "Booking: Calendly, Bookeala, Cal.com",
@@ -62,8 +72,10 @@ export const services: Service[] = [
     id: "ia",
     number: "03",
     title: "Automatización con IA",
+    tagline: "Tu equipo, libre de tareas repetitivas.",
+    icon: "brainCircuit",
     blurb:
-      "Agentes conversacionales y workflows que liberan a tu equipo de tareas repetitivas.",
+      "Agentes conversacionales y workflows que liberan a tu equipo de tareas repetitivas. Atención al cliente 24/7, captura de leads y gestión de reservas.",
     bullets: [
       "Bots de WhatsApp con Claude y OpenAI",
       "Workflows con n8n y agentes con OpenClaw",
@@ -75,8 +87,10 @@ export const services: Service[] = [
     id: "productos",
     number: "04",
     title: "Productos Zentrae",
+    tagline: "Soluciones empaquetadas, listas para implementar.",
+    icon: "package",
     blurb:
-      "Soluciones empaquetadas pre-construidas, listas para implementar en tu negocio.",
+      "Soluciones empaquetadas para negocios que reciben pedidos, reservas y reseñas. Hoy en sector restaurantero, próximamente en consultorios, spas y servicios profesionales.",
     bullets: [
       "Pulse — dashboard operativo",
       "Kitchen — comandera digital",
@@ -123,6 +137,8 @@ export type Product = {
   metric: string;
   star?: boolean;
   details: string[];
+  /** "Útil para" — sectores donde aplica el producto. */
+  useCases: string;
 };
 
 export const products: Product[] = [
@@ -139,6 +155,8 @@ export const products: Product[] = [
       "Alertas configurables por umbrales operativos.",
       "Vista móvil para gerencia desde cualquier lugar.",
     ],
+    useCases:
+      "Útil para: restaurantes, consultorios, talleres y cualquier negocio que recibe solicitudes por WhatsApp y necesita ver su operación en un solo tablero.",
   },
   {
     id: "kitchen",
@@ -153,6 +171,8 @@ export const products: Product[] = [
       "Histórico de tiempos por plato para mejora continua.",
       "Funciona offline ante caída de red.",
     ],
+    useCases:
+      "Aunque nace para cocinas, se adapta a flujos de cualquier equipo operativo que ejecuta órdenes por estados — laboratorios, talleres, áreas de producción.",
   },
   {
     id: "reserve",
@@ -160,13 +180,15 @@ export const products: Product[] = [
     tagline: "Reservas que sí llegan.",
     description:
       "Sistema de reservas con confirmación inteligente vía WhatsApp y mecánicas anti no-show.",
-    metric: "Decenas de no-shows evitados por mes en un restaurante mediano",
+    metric: "Decenas de no-shows evitados por mes en un negocio mediano",
     details: [
       "Confirmación automática por WhatsApp 24h y 2h antes.",
       "Lista de espera dinámica que llena huecos automáticamente.",
       "Política de garantía opcional con cobro vía Wompi/Stripe.",
-      "Vista de salón con drag-and-drop de mesas.",
+      "Vista de agenda con drag-and-drop.",
     ],
+    useCases:
+      "Para restaurantes, consultorios médicos, spas, salones de belleza y cualquier negocio con agenda de citas.",
   },
   {
     id: "reputation",
@@ -182,6 +204,61 @@ export const products: Product[] = [
       "Detección automática de patrones de queja recurrentes.",
       "Reporte semanal de NPS y temas calientes.",
     ],
+    useCases:
+      "Universal. Cualquier negocio con presencia en Google Maps, TripAdvisor o redes sociales que reciba reseñas de clientes.",
+  },
+];
+
+export type Vertical = {
+  id: string;
+  /** Lucide icon name — resolved in the Verticals section. */
+  icon:
+    | "utensils"
+    | "stethoscope"
+    | "sparkles"
+    | "briefcase"
+    | "store"
+    | "truck";
+  name: string;
+  desc: string;
+};
+
+export const verticals: Vertical[] = [
+  {
+    id: "restaurantes",
+    icon: "utensils",
+    name: "Restaurantes",
+    desc: "Pedidos, reservas y reseñas — el sector donde nacieron Reserve, Kitchen, Pulse y Reputation.",
+  },
+  {
+    id: "salud",
+    icon: "stethoscope",
+    name: "Consultorios y clínicas",
+    desc: "Citas, recordatorios anti no-show y seguimiento post-consulta vía WhatsApp.",
+  },
+  {
+    id: "belleza",
+    icon: "sparkles",
+    name: "Spas y belleza",
+    desc: "Reservas, fidelización por puntos y gestión activa de reseñas.",
+  },
+  {
+    id: "servicios",
+    icon: "briefcase",
+    name: "Servicios profesionales",
+    desc: "Captura y calificación de leads, cotizaciones automatizadas, agendamiento de reuniones.",
+  },
+  {
+    id: "comercio",
+    icon: "store",
+    name: "Comercio local",
+    desc: "Atención por WhatsApp, catálogo digital, pedidos y pagos con pasarela local.",
+  },
+  {
+    id: "domicilio",
+    icon: "truck",
+    name: "Servicios a domicilio",
+    desc: "Agendamiento de visitas, optimización de ruta y confirmación con el cliente.",
   },
 ];
 
@@ -254,7 +331,7 @@ export const techStack: TechItem[] = [
 export const contact = {
   eyebrow: "Hablemos",
   headline: "Listo para construir tu siguiente proyecto.",
-  sub: "Cuéntanos qué necesitas. Te respondemos en menos de 24 horas hábiles.",
+  sub: "Cuéntanos qué necesitas. Te respondemos en menos de 24 horas hábiles. ¿Tienes un negocio distinto a los que mostramos? Cuéntanos — casi seguro también lo podemos automatizar.",
   email: "hola@zentrae.com",
   whatsapp: "+57 300 000 0000",
   whatsappLink: "https://wa.me/573000000000",

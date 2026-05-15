@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { SectionHeader } from "@/components/visual/SectionHeader";
+import { SectionBackdrop } from "@/components/visual/SectionBackdrop";
+import { SectionDivider } from "@/components/visual/SectionDivider";
 import { ZSymbol } from "@/components/visual/ZSymbol";
 import { techStack, techCategories, type TechCategory } from "@/lib/content";
 import { cn } from "@/lib/utils";
@@ -24,10 +26,13 @@ export function TechStack() {
   return (
     <section
       id="stack"
-      className="relative border-t border-white/5 bg-ink py-28 sm:py-32"
+      className="relative bg-ink py-28 sm:py-32"
       aria-label="Stack técnico"
     >
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10">
+      <SectionDivider />
+      <SectionBackdrop variant="stack" />
+
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10">
         <SectionHeader
           eyebrow="Stack técnico"
           headline="La caja de herramientas con la que construimos"

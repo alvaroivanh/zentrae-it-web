@@ -7,6 +7,8 @@ import { z } from "zod";
 import { motion, useReducedMotion } from "motion/react";
 import { Check, Mail, MapPin, MessageSquare, Send } from "lucide-react";
 import { SectionHeader } from "@/components/visual/SectionHeader";
+import { SectionBackdrop } from "@/components/visual/SectionBackdrop";
+import { SectionDivider } from "@/components/visual/SectionDivider";
 import { ZSymbol } from "@/components/visual/ZSymbol";
 import { contact, founderQuote } from "@/lib/content";
 import { cn } from "@/lib/utils";
@@ -86,20 +88,13 @@ export function Contact() {
   return (
     <section
       id="contacto"
-      className="relative border-t border-white/5 bg-ink py-28 sm:py-32"
+      className="relative bg-ink py-28 sm:py-32"
       aria-label="Contacto"
     >
-      {/* Soft brand glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-72 w-[40rem] max-w-full opacity-40"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, color-mix(in oklab, var(--color-primary) 25%, transparent), transparent 70%)",
-        }}
-      />
+      <SectionDivider tone="mixed" />
+      <SectionBackdrop variant="contact" />
 
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10">
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10">
         <SectionHeader
           eyebrow={contact.eyebrow}
           headline={contact.headline}

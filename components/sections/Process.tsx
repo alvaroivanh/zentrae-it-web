@@ -2,6 +2,8 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { SectionHeader } from "@/components/visual/SectionHeader";
+import { SectionBackdrop } from "@/components/visual/SectionBackdrop";
+import { SectionDivider } from "@/components/visual/SectionDivider";
 import { process } from "@/lib/content";
 
 export function Process() {
@@ -10,16 +12,13 @@ export function Process() {
   return (
     <section
       id="proceso"
-      className="relative border-t border-white/5 bg-ink py-28 sm:py-32"
+      className="relative bg-ink py-28 sm:py-32"
       aria-label="Proceso de trabajo"
     >
-      {/* Decorative diagonal lines à la Z mark */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"
-      />
+      <SectionDivider tone="accent" />
+      <SectionBackdrop variant="process" />
 
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10">
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10">
         <SectionHeader
           eyebrow="Proceso"
           headline="Cómo trabajamos contigo"

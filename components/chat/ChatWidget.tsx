@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { X, Send, Check } from "lucide-react";
+import { X, Send, Check, MessageCircle } from "lucide-react";
 import { ZSymbol } from "@/components/visual/ZSymbol";
 import { chatGraph, rootNode, type NodeId } from "./chatFlow";
 import { cn } from "@/lib/utils";
@@ -10,11 +10,19 @@ import { cn } from "@/lib/utils";
 type Turn = { role: "bot" | "user"; text: string; at: string };
 
 const APPEAR_AFTER_MS = 8_000; // ~8s grace before the launcher appears
+const TOOLTIP_FIRST_DELAY_MS = 7_000; // first nudge once the launcher is up
+const TOOLTIP_VISIBLE_MS = 4_000;
+const SCROLL_NUDGE_THRESHOLD = 0.5; // re-nudge after passing 50% of the page
 
 export function ChatWidget() {
   const reduce = useReducedMotion();
   const [mountLauncher, setMountLauncher] = useState(false);
   const [open, setOpen] = useState(false);
+  const [hasOpenedOnce, setHasOpenedOnce] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const tooltipTimers = useRef<{ show?: number; hide?: number }>({});
+  const scrollNudgeFired = useRef(false);
+
   const [node, setNode] = useState<NodeId>(rootNode);
   const [transcript, setTranscript] = useState<Turn[]>([]);
   const [draft, setDraft] = useState("");
@@ -31,6 +39,53 @@ export function ChatWidget() {
     const t = setTimeout(() => setMountLauncher(true), APPEAR_AFTER_MS);
     return () => clearTimeout(t);
   }, []);
+
+  // Nudge the user with a tooltip 7s after the launcher mounts, and once
+  // more if they scroll past half the page without opening the chat.
+  useEffect(() => {
+    if (!mountLauncher || hasOpenedOnce) return;
+
+    function showNudge(ms = TOOLTIP_VISIBLE_MS) {
+      setTooltipOpen(true);
+      window.clearTimeout(tooltipTimers.current.hide);
+      tooltipTimers.current.hide = window.setTimeout(
+        () => setTooltipOpen(false),
+        ms,
+      );
+    }
+
+    tooltipTimers.current.show = window.setTimeout(
+      () => showNudge(),
+      TOOLTIP_FIRST_DELAY_MS,
+    );
+
+    function onScroll() {
+      if (scrollNudgeFired.current || hasOpenedOnce) return;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      if (max <= 0) return;
+      const ratio = window.scrollY / max;
+      if (ratio >= SCROLL_NUDGE_THRESHOLD) {
+        scrollNudgeFired.current = true;
+        showNudge();
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.clearTimeout(tooltipTimers.current.show);
+      window.clearTimeout(tooltipTimers.current.hide);
+    };
+  }, [mountLauncher, hasOpenedOnce]);
+
+  function handleLauncherOpen() {
+    setOpen(true);
+    setHasOpenedOnce(true);
+    setTooltipOpen(false);
+    window.clearTimeout(tooltipTimers.current.show);
+    window.clearTimeout(tooltipTimers.current.hide);
+  }
 
   // First open: seed the conversation with the root bot lines.
   useEffect(() => {
@@ -148,25 +203,106 @@ export function ChatWidget() {
         >
           {/* Launcher */}
           {!open && (
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              aria-label="Abrir chat con Zentrae"
-              className={cn(
-                "group relative flex size-14 items-center justify-center rounded-full bg-primary text-fg shadow-[0_15px_40px_-12px_rgba(127,119,221,0.7)] transition-all hover:bg-primary-dark sm:size-16",
-              )}
-            >
-              {/* Subtle pulsing ring */}
+            <div className="relative flex items-center justify-end">
+              {/* Tooltip nudge — appears on the left of the button */}
+              <AnimatePresence>
+                {tooltipOpen && (
+                  <motion.div
+                    key="chat-tooltip"
+                    initial={reduce ? false : { opacity: 0, x: 12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 12 }}
+                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                    role="tooltip"
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-[68px] top-1/2 -translate-y-1/2 whitespace-nowrap rounded-xl border border-accent/40 bg-[#FAF8F2] px-3.5 py-2 text-sm font-medium text-ink shadow-[0_15px_30px_-10px_rgba(0,0,0,0.5)]"
+                  >
+                    ¿Conversamos? Te respondo al instante.
+                    {/* Arrow */}
+                    <span
+                      aria-hidden
+                      className="absolute right-[-6px] top-1/2 size-3 -translate-y-1/2 rotate-45 border-b border-r border-accent/40 bg-[#FAF8F2]"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Expanded hover label (revealed on hover only) */}
               <span
                 aria-hidden
+                className="pointer-events-none absolute right-[68px] top-1/2 hidden -translate-y-1/2 translate-x-2 whitespace-nowrap rounded-full border border-primary/40 bg-surface px-3.5 py-1.5 text-xs text-fg opacity-0 shadow-lg transition-all duration-300 group-hover/launcher:translate-x-0 group-hover/launcher:opacity-100 sm:block"
+              >
+                Hablar con Zentrae
+              </span>
+
+              <motion.button
+                type="button"
+                onClick={handleLauncherOpen}
+                aria-label="Abrir chat con Zentrae"
                 className={cn(
-                  "absolute inset-0 rounded-full",
-                  !reduce && "animate-ping bg-primary/30",
+                  "group/launcher relative flex size-15 cursor-pointer items-center justify-center rounded-full bg-primary text-fg shadow-[0_15px_40px_-12px_rgba(127,119,221,0.7)] transition-colors hover:bg-primary-dark sm:size-[60px]",
                 )}
-                style={{ animationDuration: "2.6s" }}
-              />
-              <ZSymbol size={28} className="relative text-fg" />
-            </button>
+                whileHover={reduce ? undefined : { scale: 1.08 }}
+                whileTap={reduce ? undefined : { scale: 0.96 }}
+                animate={
+                  !reduce && !hasOpenedOnce
+                    ? { scale: [1, 1.05, 1] }
+                    : undefined
+                }
+                transition={
+                  !reduce && !hasOpenedOnce
+                    ? {
+                        duration: 0.6,
+                        repeat: Infinity,
+                        repeatDelay: 7.4,
+                        ease: "easeInOut",
+                      }
+                    : { type: "spring", stiffness: 320, damping: 22 }
+                }
+              >
+                {/* Outer attention-ring pulse */}
+                <span
+                  aria-hidden
+                  className={cn(
+                    "absolute inset-0 rounded-full",
+                    !reduce && !hasOpenedOnce && "animate-ping bg-primary/25",
+                  )}
+                  style={{ animationDuration: "3s" }}
+                />
+
+                {/* Main chat icon */}
+                <MessageCircle
+                  size={26}
+                  strokeWidth={1.75}
+                  className="relative text-fg"
+                  aria-hidden
+                />
+
+                {/* Z brand badge — top-right corner */}
+                <span
+                  aria-hidden
+                  className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-surface-2 ring-2 ring-ink"
+                >
+                  <ZSymbol size={10} className="text-accent" noDot />
+                </span>
+
+                {/* Online dot — bottom-right corner */}
+                <span
+                  aria-hidden
+                  className="absolute -bottom-0.5 -right-0.5 flex size-3.5 items-center justify-center rounded-full bg-ink ring-2 ring-ink"
+                >
+                  <span className="relative flex size-2.5">
+                    <span
+                      className={cn(
+                        "absolute inline-flex size-full rounded-full bg-success opacity-70",
+                        !reduce && "animate-ping",
+                      )}
+                    />
+                    <span className="relative inline-flex size-2.5 rounded-full bg-success" />
+                  </span>
+                </span>
+              </motion.button>
+            </div>
           )}
 
           {/* Panel */}

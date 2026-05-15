@@ -25,7 +25,7 @@
 
   /* ───────── Typography ───────── */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, "JetBrains Mono", Consolas, monospace;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
 
   /* ───────── Easing ───────── */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
